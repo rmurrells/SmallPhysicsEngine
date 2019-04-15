@@ -27,7 +27,7 @@ $(EXEC): $(BUILD_DIR)/%: $(EXEC_SRC_DIR)/%.cpp $(OBJS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo $@
-	@$(CC) -MMD -c -o $@ $< $(INC_DIR)
+	@$(CC) -MMD -c -o $@ $< -I$(INC_DIR)
 
 clean:
 	-@rm -r $(BUILD_DIR)
