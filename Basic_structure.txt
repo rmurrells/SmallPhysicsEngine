@@ -1,0 +1,15 @@
+Define particle structure and a class -- RobB
+Mass, coord x, coord y, allow manually or automated.
+
+
+A class for define the scene make it a class -- Discussion
+main create scene with size and frame and how many particles we want manual or automatic.
+
+
+A class for gravity -- Rui
+
+
+A class for elastic collision -- Rob
+
+
+Handler -- Discussion
