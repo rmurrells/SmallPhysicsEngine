@@ -5,6 +5,6 @@ Simulation::Simulation() :
 
 void Simulation::Run() {
   while(input_handler.Continue()) {
-    
+    sdl_renderer.Render();
   }
 }
