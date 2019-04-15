@@ -1,5 +1,6 @@
-#include "Particle.hpp"
+#include "Simulation.hpp"
 
 int main() {
-  Particle(1,2,3,4);
+  Simulation simulation;
+  simulation.Run();
 }

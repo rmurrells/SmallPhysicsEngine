@@ -5,8 +5,11 @@ BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj
 REQ_DIRS = $(BUILD_DIR) $(OBJ_DIR)
 
-WARNINGS = -Weverything -Wno-c++98-compat -Wno-padded
+WARNINGS = -Weverything -Wno-c++98-compat -Wno-padded -Wno-reserved-id-macro -Wno-implicit-fallthrough -Wno-documentation
 CC = g++ -std=c++17 $(WARNINGS)
+
+INCS = `sdl2-config --cflags` -I$(INC_DIR)
+LIBS = `sdl2-config --libs`
 
 MKDIR = mkdir -p
 EXEC_NAMES = run
@@ -21,13 +24,13 @@ $(REQ_DIRS):
 
 $(EXEC): $(BUILD_DIR)/%: $(EXEC_SRC_DIR)/%.cpp $(OBJS)
 	@echo $@	
-	-@$(CC) -o $@ $^ -I$(INC_DIR) $(LIBS)
+	-@$(CC) -o $@ $^ $(INCS) $(LIBS)
 
 -include $(DEPS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo $@
-	@$(CC) -MMD -c -o $@ $< -I$(INC_DIR)
+	@$(CC) -MMD -c -o $@ $< $(INCS)
 
 clean:
 	-@rm -r $(BUILD_DIR)
