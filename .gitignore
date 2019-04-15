@@ -1,0 +1,20 @@
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore
+!*/
+!makefile
+
+.DS_Store
+*~
+*.o
+*.d
+*.txt
+*.pcm
+*#
+*.root
+*.so
+*.pyc
