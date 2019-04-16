@@ -9,15 +9,14 @@ template<class PointerType, class Deleter = void(*)(PointerType*)>
 struct SDLPointer {
   SDLPointer(PointerType * in_data, Deleter in_deleter);
   SDLPointer(SDLPointer const & copy_from) = delete;
-  SDLPointer & operator=(SDLPointer const & copy_from) = delete;
+  SDLPointer & operator=(SDLPointer const & move_from) = delete;
   SDLPointer(SDLPointer && move_from);
-  SDLPointer & operator=(SDLPointer && move_from);
+  SDLPointer & operator=(SDLPointer && move_from) = delete;
   ~SDLPointer();
   PointerType * Get() const;
 private:
   PointerType * data;
   Deleter deleter;
-  void Move(SDLPointer<PointerType, Deleter> & other);
 };
 
 template<class PointerType, class Deleter>
@@ -30,12 +29,8 @@ SDLPointer<PointerType, Deleter>::SDLPointer(PointerType * in_data, Deleter in_d
 
 template<class PointerType, class Deleter>
 SDLPointer<PointerType, Deleter>::SDLPointer(SDLPointer && move_from) {
-  Move(move_from);
-}
-
-template<class PointerType, class Deleter>
-SDLPointer<PointerType, Deleter> & SDLPointer<PointerType, Deleter>::operator=(SDLPointer && move_from) {
-  Move(move_from);
+  data = move_from.data; move_from.data = nullptr;
+  deleter = move_from.deleter;
 }
 
 template<class PointerType, class Deleter>
@@ -47,13 +42,6 @@ SDLPointer<PointerType, Deleter>::~SDLPointer() {
       Utility::Warning("Unable to destroy SDLPointer");
     }
   }
-}
-
-template<class PointerType, class Deleter>
-void SDLPointer<PointerType, Deleter>::Move(SDLPointer & other) {
-  data = other.data;
-  other.data = nullptr;
-  deleter = other.deleter;
 }
 
 template<class PointerType, class Deleter>
