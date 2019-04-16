@@ -12,10 +12,8 @@ INCS = `sdl2-config --cflags` -I$(INC_DIR)
 LIBS = `sdl2-config --libs`
 
 MKDIR = mkdir -p
-EXEC_NAMES = run
-EXEC = $(patsubst %, $(BUILD_DIR)/%, $(notdir $(patsubst %.cpp, %, $(EXEC_NAMES))))
+EXEC = $(patsubst %, $(BUILD_DIR)/%, $(notdir $(patsubst %.cpp, %, $(wildcard $(EXEC_SRC_DIR)/*.cpp))))
 OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(notdir $(patsubst %.cpp, %, $(wildcard $(SRC_DIR)/*.cpp))))
-DEPS = $(patsubst %.o, %.d, $(OBJS))
 
 all: $(REQ_DIRS) $(EXEC)
 
@@ -24,9 +22,9 @@ $(REQ_DIRS):
 
 $(EXEC): $(BUILD_DIR)/%: $(EXEC_SRC_DIR)/%.cpp $(OBJS)
 	@echo $@	
-	-@$(CC) -o $@ $^ $(INCS) $(LIBS)
+	@$(CC) -o $@ $^ $(INCS) $(LIBS)
 
--include $(DEPS)
+-include $(OBJS:.o=.d)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo $@

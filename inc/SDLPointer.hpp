@@ -49,5 +49,4 @@ PointerType * SDLPointer<PointerType, Deleter>::Get() const {
   return data;
 }
 
-
 #endif
