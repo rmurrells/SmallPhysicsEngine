@@ -11,8 +11,11 @@ public:
 	    int const width = 800, int const height = 600,
             int const position_x = SDL_WINDOWPOS_UNDEFINED,
 	    int const position_y = SDL_WINDOWPOS_UNDEFINED);
-  SDLPointer<SDL_Window> ptr;
+  SDL_Window * GetWindowPtr();
+  int GetRefreshRate() const;
+  std::pair<int, int> GetWindowSize() const;
 private:
+  SDLPointer<SDL_Window> ptr;
   SDL_DisplayMode sdl_display_mode;
   int refresh_rate;
 };

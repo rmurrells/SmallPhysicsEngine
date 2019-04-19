@@ -22,13 +22,13 @@ $(REQ_DIRS):
 
 $(EXEC): $(BUILD_DIR)/%: $(EXEC_SRC_DIR)/%.cpp $(OBJS)
 	@echo $@	
-	@$(CC) -o $@ $^ $(INCS) $(LIBS)
+	@$(CC) $(INCS) -o $@ $^ $(LIBS)
 
 -include $(OBJS:.o=.d)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo $@
-	@$(CC) -MMD -c -o $@ $< $(INCS)
+	@$(CC) $(INCS) -MMD -c -o $@ $<
 
 clean:
 	-@rm -r $(BUILD_DIR)

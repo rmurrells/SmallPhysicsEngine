@@ -13,3 +13,17 @@ SDLWindow::SDLWindow(std::string const & name, Uint32 const window_flags,
     refresh_rate = sdl_display_mode.refresh_rate;
   }
 }
+
+SDL_Window * SDLWindow::GetWindowPtr() {
+  return ptr.Get();
+}
+
+int SDLWindow::GetRefreshRate() const {
+  return refresh_rate;
+}
+
+std::pair<int, int> SDLWindow::GetWindowSize() const {
+  std::pair<int, int> ret;
+  SDL_GetWindowSize(ptr.Get(), &ret.first, &ret.second);
+  return ret;
+}
