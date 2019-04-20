@@ -13,6 +13,7 @@ public:
 	    int const position_y = SDL_WINDOWPOS_UNDEFINED);
   SDL_Window * GetWindowPtr();
   int GetRefreshRate() const;
+  std::pair<int, int> GetWindowPosition() const;
   std::pair<int, int> GetWindowSize() const;
 private:
   SDLPointer<SDL_Window> ptr;

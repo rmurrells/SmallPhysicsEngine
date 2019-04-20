@@ -22,6 +22,12 @@ int SDLWindow::GetRefreshRate() const {
   return refresh_rate;
 }
 
+std::pair<int, int> SDLWindow::GetWindowPosition() const {
+  std::pair<int, int> ret;
+  SDL_GetWindowPosition(ptr.Get(), &ret.first, &ret.second);
+  return ret;
+}
+
 std::pair<int, int> SDLWindow::GetWindowSize() const {
   std::pair<int, int> ret;
   SDL_GetWindowSize(ptr.Get(), &ret.first, &ret.second);
