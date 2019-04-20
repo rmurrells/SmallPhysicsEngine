@@ -36,11 +36,8 @@ SDLPointer<PointerType, Deleter>::SDLPointer(SDLPointer && move_from) {
 template<class PointerType, class Deleter>
 SDLPointer<PointerType, Deleter>::~SDLPointer() {
   if(data) {
-    if(SDL_WasInit(SDL_INIT_VIDEO)) {
-      deleter(data);
-    } else {
-      Utility::Warning("Unable to destroy SDLPointer");
-    }
+    if(SDL_WasInit(SDL_INIT_VIDEO)) deleter(data);
+    else Utility::Warning("Unable to destroy SDLPointer");
   }
 }
 

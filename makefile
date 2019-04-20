@@ -9,7 +9,7 @@ WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded
 CC = g++ -std=c++17 $(WARNINGS)
 
 INCS = `sdl2-config --cflags` -I$(INC_DIR)
-LIBS = `sdl2-config --libs`
+LIBS = `sdl2-config --libs` -lSDL2_image
 
 MKDIR = mkdir -p
 EXEC = $(patsubst %, $(BUILD_DIR)/%, $(notdir $(patsubst %.cpp, %, $(wildcard $(EXEC_SRC_DIR)/*.cpp))))
