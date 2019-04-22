@@ -6,7 +6,9 @@ OBJ_DIR = $(BUILD_DIR)/obj
 REQ_DIRS = $(BUILD_DIR) $(OBJ_DIR)
 
 WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-reserved-id-macro -Wno-implicit-fallthrough -Wno-documentation
-CC = g++ -std=c++17 $(WARNINGS)
+#DEBUG = -g
+OP = -O2
+CC = g++ $(DEBUG) $(OP) -std=c++17 $(WARNINGS)
 
 INCS = `sdl2-config --cflags` -I$(INC_DIR)
 LIBS = `sdl2-config --libs` -lSDL2_image

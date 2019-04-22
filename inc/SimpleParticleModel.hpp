@@ -8,8 +8,12 @@ public:
   SimpleParticleModel(int const fps,
 		      std::pair<int, int> const & boundary_position,
 		      std::pair<int, int> const & boundary_size);
-  void MoveParticles(ParticleContainer & particle_container);
+  void Run(ParticleContainer & particles);
 private:
+  void MoveParticles(ParticleContainer & particles);
+  void UpdateParticleVelocity(Particle & particle1, Particle & particle2);
+  void ParticleCollision(Particle & particle1, Particle & particle2);
+  void ParticleCollisions(ParticleContainer & particles);
   void BoundaryCollision(Particle & particle);
   double move_factor;
   int boundary_x;

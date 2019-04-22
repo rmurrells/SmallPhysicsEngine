@@ -1,7 +1,6 @@
 #ifndef SIMULATION_HPP
 #define SIMULATION_HPP
 
-#include <vector>
 #include "SDLHandler.hpp"
 #include "SDLWindow.hpp"
 #include "SDLRenderer.hpp"
@@ -22,11 +21,11 @@ private:
   InputHandler input_handler;
   FPSCapper<std::chrono::microseconds> fps_capper;
   SimpleParticleModel particle_model;
-  ParticleContainer particle_container;
+  ParticleContainer particles;
 };
 
 template<class... Args> void Simulation::AddParticle(Args&&... args) {
-  particle_container.AddParticle(args...);
+  particles.emplace_back(args...);
 }
 
 

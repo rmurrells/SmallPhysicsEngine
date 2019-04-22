@@ -7,8 +7,8 @@ Simulation::Simulation() :
 
 void Simulation::Run() {
   while(input_handler.Continue()) {
-    particle_model.MoveParticles(particle_container);
-    sdl_renderer.Render(particle_container);
+    particle_model.Run(particles);
+    sdl_renderer.Render(particles);
     fps_capper.SleepToNextFrame();
   }
 }

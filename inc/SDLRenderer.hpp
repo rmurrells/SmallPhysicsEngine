@@ -1,8 +1,8 @@
 #ifndef SDLRENDERER_HPP
 #define SDLRENDERER_HPP
 
-#include "SDLPointer.hpp"
 #include "ParticleContainer.hpp"
+#include "SDLPointer.hpp"
 #include "SDLTexture.hpp"
 
 class SDLRenderer {
