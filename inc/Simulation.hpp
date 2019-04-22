@@ -8,6 +8,7 @@
 #include "SimpleParticleModel.hpp"
 #include "FPSCapper.hpp"
 #include "ParticleContainer.hpp"
+#include "Border.hpp"
 
 class Simulation {
 public:
@@ -20,7 +21,6 @@ private:
   SDLRenderer sdl_renderer;
   InputHandler input_handler;
   FPSCapper<std::chrono::microseconds> fps_capper;
-  SimpleParticleModel particle_model;
   ParticleContainer particles;
 };
 
