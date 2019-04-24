@@ -11,10 +11,9 @@ namespace {
     }
   }
 
-  void HandleParticleSamePosition(Particle & particle1, Particle & particle2) {
+  void HandleParticleSamePosition(Particle & particle1, Particle & particle2, double const radius_sum) {
     double const mag1{Utility::Magnitude(particle1.vel_x, particle1.vel_y)};
     double const mag2{Utility::Magnitude(particle2.vel_x, particle2.vel_y)};
-    double const radius_sum{particle1.radius+particle2.radius};
     auto UpdateParticle =
       [](Particle & particle, double const dist, double const mag) {
 	particle.pos_x -= dist*particle.vel_x/mag;
@@ -62,7 +61,7 @@ namespace {
     double const dist{std::sqrt(distx*distx + disty*disty)};
     double const radius_sum{particle1.radius + particle2.radius};
     if(dist >= radius_sum) return;
-    if(dist < std::numeric_limits<double>::epsilon()) HandleParticleSamePosition(particle1, particle2);
+    if(dist < std::numeric_limits<double>::epsilon()) HandleParticleSamePosition(particle1, particle2, radius_sum);
     else {
       double const split_distx{(radius_sum*distx/dist - distx)/2};
       double const split_disty{(radius_sum*disty/dist - disty)/2};

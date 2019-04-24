@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <thread>
+#include <iostream>
 
 template<class TimeUnit>
 class FPSCapper {

@@ -1,22 +1,17 @@
 #include "SDLRenderer.hpp"
 
 SDLRenderer::SDLRenderer(SDL_Window * const sdl_window, int const index, Uint32 const flags) :
-  ptr{SDL_CreateRenderer(sdl_window, index, flags), SDL_DestroyRenderer},
-  sdl_texture{"../bmp/dot.bmp", ptr.Get()} {
-  if(!ptr.Get()) {
-    throw std::runtime_error("SDL_Renderer could not be created, SDL_Error: "+std::string{SDL_GetError()});
-  }
+  ptr{SDL_CreateRenderer(sdl_window, index, flags), SDL_DestroyRenderer} {
+  if(!ptr.Get()) throw std::runtime_error("SDL_Renderer could not be created, SDL_Error: "+std::string{SDL_GetError()});
 }
 
 void SDLRenderer::Render(ParticleContainer const & particles) {
   SDL_SetRenderDrawColor(ptr.Get(), 255, 255, 255, 1);
   SDL_RenderClear(ptr.Get());
-  for(auto & particle : particles) {
-    if(sdl_texture.Get()) {
-      TextureRender(particle);
-    } else {
-      PrimitiveRender(particle);
-    }
+  for(ParticleContainer::size_type i = 0; i < particles.size(); ++i) {
+    auto & particle = particles[i];
+    if(textures[i].Get()) TextureRender(particle, textures[i].Get());
+    else PrimitiveRender(particle);
   }
   SDL_RenderPresent(ptr.Get());
 }
@@ -36,7 +31,7 @@ void SDLRenderer::PrimitiveRender(Particle const & particle) {
   SDL_RenderFillRect(ptr.Get(), &sdl_rect);  
 }
 
-void SDLRenderer::TextureRender(Particle const & particle) {
+void SDLRenderer::TextureRender(Particle const & particle, SDL_Texture * sdl_texture) {
   SDL_Rect sdl_rect{GetRectFromParticle(particle)};
-  SDL_RenderCopy(ptr.Get(), sdl_texture.Get(),  nullptr, &sdl_rect);
+  SDL_RenderCopy(ptr.Get(), sdl_texture, nullptr, &sdl_rect);
 }

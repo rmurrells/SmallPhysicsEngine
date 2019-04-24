@@ -6,6 +6,10 @@ void Utility::Warning(std::string const & message) {
   std::cout << "WARNING: " << message << '\n';
 }
 
+void Utility::SDLWarning(std::string const & message) {
+  std::cout << "WARNING: " << message << ", SDL_Error: " << SDL_GetError() << '\n';
+}
+
 double Utility::DotProduct(double const ax, double const ay, double const bx, double const by) {
   return ax*bx+ay*by;
 }

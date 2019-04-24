@@ -11,10 +11,12 @@ struct SDLPointer {
   SDLPointer(SDLPointer const & copy_from) = delete;
   SDLPointer & operator=(SDLPointer const & move_from) = delete;
   SDLPointer(SDLPointer && move_from);
-  SDLPointer & operator=(SDLPointer && move_from) = delete;
+  SDLPointer & operator=(SDLPointer && move_from);
   ~SDLPointer();
   PointerType * Get() const;
+  PointerType * operator->() const;
 private:
+  void Move(SDLPointer && move_from);
   PointerType * data;
   Deleter deleter;
 };
@@ -29,8 +31,13 @@ SDLPointer<PointerType, Deleter>::SDLPointer(PointerType * in_data, Deleter in_d
 
 template<class PointerType, class Deleter>
 SDLPointer<PointerType, Deleter>::SDLPointer(SDLPointer && move_from) {
-  data = move_from.data; move_from.data = nullptr;
-  deleter = move_from.deleter;
+  Move(std::move(move_from));
+}
+
+template<class PointerType, class Deleter>
+SDLPointer<PointerType, Deleter> & SDLPointer<PointerType, Deleter>::operator=(SDLPointer && move_from) {
+  Move(std::move(move_from));
+  return *this;
 }
 
 template<class PointerType, class Deleter>
@@ -44,6 +51,17 @@ SDLPointer<PointerType, Deleter>::~SDLPointer() {
 template<class PointerType, class Deleter>
 PointerType * SDLPointer<PointerType, Deleter>::Get() const {
   return data;
+}
+
+template<class PointerType, class Deleter>
+PointerType * SDLPointer<PointerType, Deleter>::operator->() const {
+  return data;
+}
+
+template<class PointerType, class Deleter>
+void SDLPointer<PointerType, Deleter>::Move(SDLPointer && move_from) {
+  data = move_from.data; move_from.data = nullptr;
+  deleter = move_from.deleter;
 }
 
 #endif
