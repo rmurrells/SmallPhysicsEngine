@@ -15,8 +15,10 @@ struct SDLPointer {
   ~SDLPointer();
   PointerType * Get() const;
   PointerType * operator->() const;
+  PointerType * Release();
 private:
-  void Move(SDLPointer && move_from);
+  void Move(SDLPointer & move_from);
+  void Free();
   PointerType * data;
   Deleter deleter;
 };
@@ -31,21 +33,19 @@ SDLPointer<PointerType, Deleter>::SDLPointer(PointerType * in_data, Deleter in_d
 
 template<class PointerType, class Deleter>
 SDLPointer<PointerType, Deleter>::SDLPointer(SDLPointer && move_from) {
-  Move(std::move(move_from));
+  Move(move_from);
 }
 
 template<class PointerType, class Deleter>
 SDLPointer<PointerType, Deleter> & SDLPointer<PointerType, Deleter>::operator=(SDLPointer && move_from) {
-  Move(std::move(move_from));
+  Free();
+  Move(move_from);
   return *this;
 }
 
 template<class PointerType, class Deleter>
 SDLPointer<PointerType, Deleter>::~SDLPointer() {
-  if(data) {
-    if(SDL_WasInit(SDL_INIT_VIDEO)) deleter(data);
-    else Utility::Warning("Unable to destroy SDLPointer");
-  }
+  Free();
 }
 
 template<class PointerType, class Deleter>
@@ -59,8 +59,24 @@ PointerType * SDLPointer<PointerType, Deleter>::operator->() const {
 }
 
 template<class PointerType, class Deleter>
-void SDLPointer<PointerType, Deleter>::Move(SDLPointer && move_from) {
-  data = move_from.data; move_from.data = nullptr;
+PointerType * SDLPointer<PointerType, Deleter>::Release() {
+  PointerType * ret{nullptr};
+  std::swap(ret, data);
+  return ret;
+}
+ 
+template<class PointerType, class Deleter>
+void SDLPointer<PointerType, Deleter>::Free() {
+  if(data) {
+    if(SDL_WasInit(SDL_INIT_VIDEO)) deleter(data);
+    else Utility::Warning("Unable to destroy SDLPointer");
+  }
+}
+
+template<class PointerType, class Deleter>
+void SDLPointer<PointerType, Deleter>::Move(SDLPointer & move_from) {
+  data = nullptr;
+  std::swap(data, move_from.data);
   deleter = move_from.deleter;
 }
 
