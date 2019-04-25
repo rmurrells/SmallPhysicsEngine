@@ -37,7 +37,7 @@ namespace {
 
 int main() {
   Simulation simulation;
-  simulation.SetBackgroundColor({0, 0, 0, 255});
+  simulation.SetBackgroundColor(0, 0, 0);
   auto const [width, height] = simulation.GetWindowSize();
   double const radius{4}; double const mass{1}; 
   int const nj = 30;
@@ -49,7 +49,7 @@ int main() {
       double const pos_y{j*static_cast<double>(height)/nj};
       if(static_cast<int>(pos_x) != width/2 || static_cast<int>(pos_y) != height/2) {
 	auto const [vel_x, vel_y] = SetCircleVelocity(pos_x, pos_y, width/2, height/2, -std::sqrt(2));
-	simulation.AddParticle(pos_x, pos_y, vel_x, vel_y, radius, mass, color, 21);
+	simulation.AddParticle(pos_x, pos_y, vel_x, vel_y, radius, mass, color);
       }
       IncrementColor(color);
     }

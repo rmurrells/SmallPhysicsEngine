@@ -13,6 +13,10 @@ void Simulation::SetBackgroundColor(SDL_Color const & color) {
   sdl_renderer.SetBackgroundColor(color);
 }
 
+void Simulation::SetBackgroundColor(Uint8 const r, Uint8 const g, Uint8 const b, Uint8 const a) {
+  SetBackgroundColor({r, g, b, a});
+}
+
 void Simulation::AddParticle(double const pos_x, double const pos_y,
 			     double const vel_x, double const vel_y,
 			     double const radius, double const mass,
@@ -36,7 +40,7 @@ void Simulation::AddParticle(double const pos_x, double const pos_y,
     return;
   }
   particles.emplace_back(pos_x, pos_y, vel_x, vel_y, radius, mass);
-  sdl_renderer.AddTexture(texture_size ? texture_size : static_cast<int>(radius*2), color);
+  sdl_renderer.AddTexture(texture_size ? texture_size : std::max(static_cast<int>(radius*2), 21), color);
 }
 
 void Simulation::Run() {

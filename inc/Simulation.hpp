@@ -19,6 +19,7 @@ public:
 		   SDL_Color const & color = {0, 0, 0, 255}, int const texture_size = 0);
   std::pair<int, int> GetWindowSize() const;
   void SetBackgroundColor(SDL_Color const & color);
+  void SetBackgroundColor(Uint8 const r, Uint8 const g, Uint8 const b, Uint8 const a = 255);
   void Run();
 private:
   SDLHandler sdl_handler;
