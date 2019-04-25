@@ -10,8 +10,8 @@ struct SDLPointer {
   SDLPointer(PointerType * in_data, Deleter in_deleter);
   SDLPointer(SDLPointer const & copy_from) = delete;
   SDLPointer & operator=(SDLPointer const & move_from) = delete;
-  SDLPointer(SDLPointer && move_from);
-  SDLPointer & operator=(SDLPointer && move_from);
+  SDLPointer(SDLPointer && move_from) noexcept;
+  SDLPointer & operator=(SDLPointer && move_from) noexcept;
   ~SDLPointer();
   PointerType * Get() const;
   PointerType * operator->() const;
@@ -25,19 +25,15 @@ private:
 
 template<class PointerType, class Deleter>
 SDLPointer<PointerType, Deleter>::SDLPointer(PointerType * in_data, Deleter in_deleter) :
-  data{in_data}, deleter{in_deleter} {
-  if(!SDL_WasInit(SDL_INIT_VIDEO) && SDL_Init(SDL_INIT_VIDEO) != 0) {
-    throw std::runtime_error("SDL could not initialize, SDL_Error: "+std::string{SDL_GetError()});
-  }      
-}
+  data{in_data}, deleter{in_deleter} {}
 
 template<class PointerType, class Deleter>
-SDLPointer<PointerType, Deleter>::SDLPointer(SDLPointer && move_from) {
+SDLPointer<PointerType, Deleter>::SDLPointer(SDLPointer && move_from) noexcept {
   Move(move_from);
 }
 
 template<class PointerType, class Deleter>
-SDLPointer<PointerType, Deleter> & SDLPointer<PointerType, Deleter>::operator=(SDLPointer && move_from) {
+SDLPointer<PointerType, Deleter> & SDLPointer<PointerType, Deleter>::operator=(SDLPointer && move_from) noexcept {
   Free();
   Move(move_from);
   return *this;

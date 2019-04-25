@@ -5,18 +5,38 @@ Simulation::Simulation() :
   sdl_window{"Simulation"}, sdl_renderer{sdl_window.GetWindowPtr()},
   fps_capper{60} {}
 
-void Simulation::AddParticle(double const pos_x, double const pos_y,
-			     double const vel_x, double const vel_y,
-			     double const radius, double const mass,
-			     Uint32 const color, int const texture_radius) {
-  AddParticleImpl<Uint32>(pos_x, pos_y, vel_x, vel_y, radius, mass, color, texture_radius);
+std::pair<int, int> Simulation::GetWindowSize() const {
+  return sdl_window.GetWindowSize();
+}
+
+void Simulation::SetBackgroundColor(SDL_Color const & color) {
+  sdl_renderer.SetBackgroundColor(color);
 }
 
 void Simulation::AddParticle(double const pos_x, double const pos_y,
 			     double const vel_x, double const vel_y,
 			     double const radius, double const mass,
-			     SDL_Color const & color, int const texture_radius) {
-  AddParticleImpl<SDL_Color>(pos_x, pos_y, vel_x, vel_y, radius, mass, color, texture_radius);
+			     SDL_Color const & color, int const texture_size) {
+  if constexpr(std::numeric_limits<double>::is_iec559) {
+    if(std::isnan(pos_x) || std::isnan(pos_x) || std::isnan(vel_x) ||
+       std::isnan(radius) || std::isnan(mass)) {
+      Utility::Warning("Invalid particle not added to simulation - pos_x: "+
+		       std::to_string(pos_x)+" pos_y: "+std::to_string(pos_y)+" vel_x: "+
+		       std::to_string(vel_x)+" vel_y: "+std::to_string(vel_y)+" radius: "+
+		       std::to_string(radius)+" mass: "+std::to_string(mass));
+      return;
+    }
+  }
+  if(radius < std::numeric_limits<double>::epsilon()) {
+    Utility::Warning("Particle with radius == 0 not added to simulation");
+    return;
+  }
+  if(mass < std::numeric_limits<double>::epsilon()) {
+    Utility::Warning("Particle with mass == 0  not added to simulation");
+    return;
+  }
+  particles.emplace_back(pos_x, pos_y, vel_x, vel_y, radius, mass);
+  sdl_renderer.AddTexture(texture_size ? texture_size : static_cast<int>(radius*2), color);
 }
 
 void Simulation::Run() {
