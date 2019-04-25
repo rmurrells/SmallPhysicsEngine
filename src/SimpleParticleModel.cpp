@@ -30,9 +30,11 @@ namespace {
 	UpdateParticle(particle1, dist, mag1);
 	UpdateParticle(particle2, dist, mag2);
       }
-    } else {
-      if(mag1 > mag2) UpdateParticle(particle1, radius_sum, mag1);
-      else UpdateParticle(particle2, radius_sum, mag2);
+    } else if(mag1 > mag2) UpdateParticle(particle1, radius_sum, mag1);
+    else if(mag2 > mag1) UpdateParticle(particle2, radius_sum, mag2);
+    else {
+      particle1.pos_x -= radius_sum/2;
+      particle2.pos_x += radius_sum/2;
     }
   }
 
@@ -51,8 +53,8 @@ namespace {
       };
     UpdateVelocity(particle1.vel_x, particle1.mass, particle2.mass, dp1, distx);
     UpdateVelocity(particle1.vel_y, particle1.mass, particle2.mass, dp1, disty);
-    UpdateVelocity(particle2.vel_x, particle2.mass, particle1.mass, dp2, -1*distx);
-    UpdateVelocity(particle2.vel_y, particle2.mass, particle1.mass, dp2, -1*disty);
+    UpdateVelocity(particle2.vel_x, particle2.mass, particle1.mass, dp2, distx*-1);
+    UpdateVelocity(particle2.vel_y, particle2.mass, particle1.mass, dp2, disty*-1);
   }
 
   void CollideParticlePair(Particle & particle1, Particle & particle2) {

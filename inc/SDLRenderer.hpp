@@ -7,7 +7,8 @@
 
 class SDLRenderer {
 public:
-  SDLRenderer(SDL_Window * const sdl_window, int const index = -1, Uint32 const flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  SDLRenderer(SDL_Window * const sdl_window, int const index = -1,
+	      Uint32 const flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   template<class ColorType> void AddTexture(int const diameter, ColorType const & sdl_color);
   void Render(ParticleContainer const & particles);
 private:

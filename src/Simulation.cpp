@@ -1,4 +1,5 @@
 #include "Simulation.hpp"
+#include "Border.hpp"
 
 Simulation::Simulation() :
   sdl_window{"Simulation"}, sdl_renderer{sdl_window.GetWindowPtr()},
@@ -7,17 +8,15 @@ Simulation::Simulation() :
 void Simulation::AddParticle(double const pos_x, double const pos_y,
 			     double const vel_x, double const vel_y,
 			     double const radius, double const mass,
-			     SDL_Color const & color) {
-  particles.emplace_back(pos_x, pos_y, vel_x, vel_y, radius, mass);
-  sdl_renderer.AddTexture(23, color);
+			     Uint32 const color, int const texture_radius) {
+  AddParticleImpl<Uint32>(pos_x, pos_y, vel_x, vel_y, radius, mass, color, texture_radius);
 }
 
 void Simulation::AddParticle(double const pos_x, double const pos_y,
 			     double const vel_x, double const vel_y,
 			     double const radius, double const mass,
-			     Uint32 const color) {
-  particles.emplace_back(pos_x, pos_y, vel_x, vel_y, radius, mass);
-  sdl_renderer.AddTexture(23, color);
+			     SDL_Color const & color, int const texture_radius) {
+  AddParticleImpl<SDL_Color>(pos_x, pos_y, vel_x, vel_y, radius, mass, color, texture_radius);
 }
 
 void Simulation::Run() {
