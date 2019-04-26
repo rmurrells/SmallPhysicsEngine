@@ -24,8 +24,8 @@ void SDLRenderer::Render(ParticleContainer const & particles) {
   SDL_SetRenderDrawColor(ptr.Get(), background_color.r, background_color.g,
 			 background_color.b, background_color.a);
   SDL_RenderClear(ptr.Get());
-  for(ParticleContainer::size_type i = 0; i < particles.size(); ++i) {
-    auto & particle = particles[i];
+  for(ParticleContainer::size_type i{0}; i < particles.size(); ++i) {
+    auto & particle{particles[i]};
     if(texture_interface[i]) TextureRender(particle, texture_interface[i]);
     else PrimitiveRender(particle);
   }
