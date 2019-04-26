@@ -5,7 +5,7 @@
 #include "Border.hpp"
 
 namespace SimpleParticleModel {
-  void Run(ParticleContainer & particles, Border const & border);
+  void Run(ParticleContainer & particles);
 }
 
 #endif

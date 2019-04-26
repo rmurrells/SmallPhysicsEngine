@@ -1,6 +1,9 @@
 #include "Simulation.hpp"
 #include "Border.hpp"
 #include "Utility.hpp"
+#include "MouseInteraction.hpp"
+#include "SimpleParticleModel.hpp"
+#include "Math.hpp"
 
 Simulation::Simulation() :
   sdl_window{"Simulation"}, sdl_renderer{sdl_window.GetWindowPtr()},
@@ -43,15 +46,17 @@ void Simulation::AddParticle(double const pos_x, double const pos_y,
     Utility::Warning("Particle with mass == 0  not added to simulation - "+GetValueString());
     return;
   }
-  if(radius < Utility::Magnitude(vel_x, vel_y)) Utility::Warning("Particle radius should be >= particle speed - "+GetValueString());
+  if(radius < Math::Magnitude(vel_x, vel_y)) Utility::Warning("Particle radius should be >= particle speed - "+GetValueString());
   particles.emplace_back(pos_x, pos_y, vel_x, vel_y, radius, mass);
   sdl_renderer.AddTexture(texture_size ? texture_size : std::max(static_cast<int>(radius*2), 21), color);
 }
 
 void Simulation::Run() {
-  Border border{{0, 0}, sdl_window.GetWindowSize()};
+  Border border{{0, 0}, sdl_window.GetWindowSize(), 0.5};
   while(input_handler.Continue()) {
-    SimpleParticleModel::Run(particles, border);
+    MouseInteraction::Radial(particles, input_handler.GetMouseState());
+    SimpleParticleModel::Run(particles);
+    border.Collide(particles);
     sdl_renderer.Render(particles);
     fps_capper.SleepToNextFrame();
   }

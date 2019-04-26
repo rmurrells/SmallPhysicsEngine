@@ -1,6 +1,6 @@
 #include "SimpleParticleModel.hpp"
 #include <cmath>
-#include "Utility.hpp"
+#include "Math.hpp"
 
 namespace {
   
@@ -12,16 +12,16 @@ namespace {
   }
 
   void HandleParticleSamePosition(Particle & particle1, Particle & particle2, double const radius_sum) {
-    double const mag1{Utility::Magnitude(particle1.vel_x, particle1.vel_y)};
-    double const mag2{Utility::Magnitude(particle2.vel_x, particle2.vel_y)};
+    double const mag1{Math::Magnitude(particle1.vel_x, particle1.vel_y)};
+    double const mag2{Math::Magnitude(particle2.vel_x, particle2.vel_y)};
     auto UpdateParticle =
       [](Particle & particle, double const dist, double const mag) {
 	particle.pos_x -= dist*particle.vel_x/mag;
 	particle.pos_y -= dist*particle.vel_y/mag;      
       };
     if(mag1 > 0 && mag2 > 0) {
-      double const cos_theta{std::acos(Utility::DotProduct(particle1.vel_x, particle1.vel_y,
-							   particle2.vel_x, particle2.vel_y)/(mag1*mag2))};
+      double const cos_theta{std::acos(Math::DotProduct(particle1.vel_x, particle1.vel_y,
+							particle2.vel_x, particle2.vel_y)/(mag1*mag2))};
       if(cos_theta-1 < std::numeric_limits<double>::epsilon()) {
 	if(mag1 > mag2) UpdateParticle(particle1, radius_sum, mag1);
 	else UpdateParticle(particle2, radius_sum, mag2);
@@ -39,10 +39,10 @@ namespace {
   }
 
   void UpdateParticleVelocity(Particle & particle1, Particle & particle2) {
-    double const dp1{Utility::DotProduct(particle1.vel_x-particle2.vel_x, particle1.vel_y-particle2.vel_y,
-					 particle1.pos_x-particle2.pos_x, particle1.pos_y-particle2.pos_y)};
-    double const dp2{Utility::DotProduct(particle2.vel_x-particle1.vel_x, particle2.vel_y-particle1.vel_y,
-					 particle2.pos_x-particle1.pos_x, particle2.pos_y-particle1.pos_y)};
+    double const dp1{Math::DotProduct(particle1.vel_x-particle2.vel_x, particle1.vel_y-particle2.vel_y,
+				      particle1.pos_x-particle2.pos_x, particle1.pos_y-particle2.pos_y)};
+    double const dp2{Math::DotProduct(particle2.vel_x-particle1.vel_x, particle2.vel_y-particle1.vel_y,
+				      particle2.pos_x-particle1.pos_x, particle2.pos_y-particle1.pos_y)};
     double const distx{particle1.pos_x-particle2.pos_x};
     double const disty{particle1.pos_y-particle2.pos_y};
     double const distsq{distx*distx + disty*disty};
@@ -75,35 +75,18 @@ namespace {
     UpdateParticleVelocity(particle1, particle2);
   }
 
-  void BoundaryCollision(Particle & particle, Border const & border) {
-    auto CheckAxis =
-      [](double & position, double & velocity,
-	 double const radius, double const sboundary, double const lboundary) {
-	if(velocity > 0 && position+radius > sboundary+lboundary) {
-	  position = sboundary+lboundary-radius;
-	  velocity *= -1;
-	} else if(position-radius < sboundary) {
-	  position = sboundary+radius;
-	  velocity *= -1;
-	}
-      };
-    CheckAxis(particle.pos_x, particle.vel_x, particle.radius, border.xmin, border.xmax);
-    CheckAxis(particle.pos_y, particle.vel_y, particle.radius, border.ymin, border.ymax);
-  }
-
-  void ParticleCollisions(ParticleContainer & particles, Border const & border) {
+  void ParticleCollisions(ParticleContainer & particles) {
     for(auto begin{particles.begin()}, it{begin}, end{particles.end()}; it != end; ++it) {
       for(auto it2{it}; it2 != end; ++it2) {
 	if(it2 == it) continue;
 	CollideParticlePair(*it2, *it);
       }
-      BoundaryCollision(*it, border);
     }
   }
 
 }
 
-void SimpleParticleModel::Run(ParticleContainer & particles, Border const & border) {
+void SimpleParticleModel::Run(ParticleContainer & particles) {
   MoveParticles(particles);
-  ParticleCollisions(particles, border);
+  ParticleCollisions(particles);
 }

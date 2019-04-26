@@ -6,7 +6,6 @@
 #include "SDLWindow.hpp"
 #include "SDLRenderer.hpp"
 #include "InputHandler.hpp"
-#include "SimpleParticleModel.hpp"
 #include "FPSCapper.hpp"
 #include "ParticleContainer.hpp"
 
