@@ -92,8 +92,8 @@ namespace {
   }
 
   void ParticleCollisions(ParticleContainer & particles, Border const & border) {
-    for(auto it = particles.begin(); it != particles.end(); ++it) {
-      for(auto it2 = particles.begin(); it2 != particles.end(); ++it2) {
+    for(auto it = particles.begin(), end = particles.end(); it != end; ++it) {
+      for(auto it2 = it; it2 != end; ++it2) {
 	if(it2 == it) continue;
 	CollideParticlePair(*it2, *it);
       }

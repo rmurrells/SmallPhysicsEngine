@@ -14,6 +14,6 @@ int main() {
 			     vel_x, vel_y, radius, mass, {0, 255, 0, 255});
     }
   }
-  simulation.AddParticle(0, 0, 5, 5, 4, 20, {255, 0, 0, 255}); 
+  simulation.AddParticle(0, 0, 5, 4, 5, 20, {255, 0, 0, 255}); 
   simulation.Run();
 }
