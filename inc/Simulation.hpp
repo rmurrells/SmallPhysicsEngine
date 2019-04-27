@@ -8,10 +8,12 @@
 #include "InputHandler.hpp"
 #include "FPSCapper.hpp"
 #include "ParticleContainer.hpp"
+#include "SimpleParticleModel.hpp"
 
 class Simulation {
 public:
-  Simulation();
+  Simulation(double const particle_damping = 1, double const coefficient_of_restitution = 1,
+	     double const in_border_damping = 1, double const in_mouse_acceleration = 0);
   void AddParticle(double const pos_x, double const pos_y,
 		   double const vel_x, double const vel_y,
 		   double const radius, double const mass,
@@ -27,6 +29,9 @@ private:
   InputHandler input_handler;
   FPSCapper<std::chrono::microseconds> fps_capper;
   ParticleContainer particles;
+  SimpleParticleModel simple_particle_model;
+  double border_damping;
+  double mouse_acceleration;
 };
 
 #endif

@@ -2,12 +2,13 @@
 #include "Border.hpp"
 #include "Utility.hpp"
 #include "MouseInteraction.hpp"
-#include "SimpleParticleModel.hpp"
 #include "Math.hpp"
 
-Simulation::Simulation() :
-  sdl_window{"Simulation"}, sdl_renderer{sdl_window.GetWindowPtr()},
-  fps_capper{60} {}
+Simulation::Simulation(double const particle_damping, double const coefficient_of_restitution,
+		       double const in_border_damping, double const in_mouse_acceleration) :
+  sdl_window{"Simulation"}, sdl_renderer{sdl_window.GetWindowPtr()}, fps_capper{60},
+  simple_particle_model{particle_damping, coefficient_of_restitution},
+  border_damping{in_border_damping}, mouse_acceleration{in_mouse_acceleration} {}
 
 std::pair<int, int> Simulation::GetWindowSize() const {
   return sdl_window.GetWindowSize();
@@ -52,10 +53,10 @@ void Simulation::AddParticle(double const pos_x, double const pos_y,
 }
 
 void Simulation::Run() {
-  Border border{{0, 0}, sdl_window.GetWindowSize(), 0.5};
+  Border border{{0, 0}, sdl_window.GetWindowSize(), border_damping};
   while(input_handler.Continue()) {
-    MouseInteraction::Radial(particles, input_handler.GetMouseState());
-    SimpleParticleModel::Run(particles);
+    MouseInteraction::Radial(particles, input_handler.GetMouseState(), mouse_acceleration);
+    simple_particle_model.Run(particles);
     border.Collide(particles);
     sdl_renderer.Render(particles);
     fps_capper.SleepToNextFrame();

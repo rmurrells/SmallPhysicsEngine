@@ -5,7 +5,7 @@
 #include "ParticleContainer.hpp"
 
 namespace MouseInteraction {
-  void Radial(ParticleContainer & particle_container, MouseState const & mouse_state);
+  void Radial(ParticleContainer & particle_container, MouseState const & mouse_state, double const speed);
 }
 
 #endif
