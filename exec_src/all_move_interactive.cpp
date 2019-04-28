@@ -10,10 +10,10 @@ namespace {
       ++color.g;
       break;
     case 1:
-      --color.r;
+      --color.b;
       break;
     case 2:
-      ++color.b;
+      ++color.r;
       break;
     case 3:
       --color.g;
@@ -33,7 +33,7 @@ int main() {
   double const radius{4}; double const mass{1}; 
   int const nj = 30;
   int const ni = 34;
-  SDL_Color color{255, 0, 0, 255};
+  SDL_Color color{0, 0, 255, 255};
   for(int j{1}; j < nj; ++j) {
     for(int i{1}; i < ni; ++i) {
       double const pos_x{i*static_cast<double>(width)/ni};
