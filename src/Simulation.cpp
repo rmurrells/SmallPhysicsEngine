@@ -33,7 +33,7 @@ void Simulation::AddParticle(double const pos_x, double const pos_y,
 	" radius: "+std::to_string(radius)+" mass: "+std::to_string(mass);
     };
   if constexpr(std::numeric_limits<double>::is_iec559) {
-    if(std::isnan(pos_x) || std::isnan(pos_x) || std::isnan(vel_x) ||
+    if(std::isnan(pos_x) || std::isnan(pos_y) || std::isnan(vel_x) || std::isnan(vel_y) ||
        std::isnan(radius) || std::isnan(mass)) {
       Utility::Warning("Invalid particle not added to simulation - "+GetValueString());
       return;

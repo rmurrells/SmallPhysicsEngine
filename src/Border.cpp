@@ -23,7 +23,7 @@ void Border::Collide(ParticleContainer & particle_container) {
     auto CheckAxis =
       [](double & position, double & velocity, double const radius,
 	 double const sboundary, double const lboundary, double const damping) {
-	if(velocity > 0 && position+radius > sboundary+lboundary) {
+	if(position+radius > sboundary+lboundary) {
 	  position = sboundary+lboundary-radius;
 	  velocity *= -damping;
 	} else if(position-radius < sboundary) {
