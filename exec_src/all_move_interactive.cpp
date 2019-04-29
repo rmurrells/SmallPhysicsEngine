@@ -42,5 +42,7 @@ int main() {
       IncrementColor(color);
     }
   }
+  simulation.AddImmovable(200, 200, 100, {125, 125, 125, 255});
+  simulation.AddImmovable(width-200, height-200, 50, {125, 125, 125, 255});
   simulation.Run();
 }

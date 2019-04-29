@@ -1,28 +1,23 @@
-#include "SimpleParticleModel.hpp"
+#include "SimpleParticleCollider.hpp"
 #include <cmath>
 #include "Math.hpp"
 
-SimpleParticleModel::SimpleParticleModel(double const in_motion_damping_factor,
-					 double const in_coefficient_of_restitution) :
-  motion_damping_factor{in_motion_damping_factor}, coefficient_of_restitution{in_coefficient_of_restitution} {}
+SimpleParticleCollider::SimpleParticleCollider(double const in_coefficient_of_restitution) :
+  coefficient_of_restitution{in_coefficient_of_restitution} {}
 
-void SimpleParticleModel::Run(ParticleContainer & particles) const {
-  MoveParticles(particles);
-  ParticleCollisions(particles);
-}
-
-void SimpleParticleModel::MoveParticles(ParticleContainer & particles) const {
-  for(Particle & particle : particles) {
-    particle.vel_x *= motion_damping_factor;
-    particle.vel_y *= motion_damping_factor;
-    particle.pos_x += particle.vel_x;
-    particle.pos_y += particle.vel_y;
+void SimpleParticleCollider::Collide(ParticleContainer & particles) const {
+  for(auto begin{particles.begin()}, it{begin}, end{particles.end()}; it != end; ++it) {
+    for(auto it2{begin}; it2 != end; ++it2) {
+      if(it2 == it) continue;
+      CollideParticlePair(*it2, *it);
+    }
   }
 }
 
-void SimpleParticleModel::HandleParticleSamePosition(Particle & particle1, Particle & particle2, double const radius_sum) const {
+void SimpleParticleCollider::HandleParticleSamePosition(Particle & particle1, Particle & particle2) const {
   double const mag1{Math::Magnitude(particle1.vel_x, particle1.vel_y)};
   double const mag2{Math::Magnitude(particle2.vel_x, particle2.vel_y)};
+  double const radius_sum{particle1.radius + particle2.radius};
   auto UpdateParticle =
     [](Particle & particle, double const dist, double const mag) {
       particle.pos_x -= dist*particle.vel_x/mag;
@@ -47,7 +42,7 @@ void SimpleParticleModel::HandleParticleSamePosition(Particle & particle1, Parti
   }
 }
 
-void SimpleParticleModel::UpdateParticleVelocity(Particle & particle1, Particle & particle2) const {
+void SimpleParticleCollider::UpdateParticleVelocity(Particle & particle1, Particle & particle2) const {
   double const dp1{Math::DotProduct(particle1.vel_x-particle2.vel_x, particle1.vel_y-particle2.vel_y,
 				    particle1.pos_x-particle2.pos_x, particle1.pos_y-particle2.pos_y)};
   double const dp2{Math::DotProduct(particle2.vel_x-particle1.vel_x, particle2.vel_y-particle1.vel_y,
@@ -66,13 +61,13 @@ void SimpleParticleModel::UpdateParticleVelocity(Particle & particle1, Particle 
   UpdateVelocity(particle2.vel_y, particle2.mass, particle1.mass, dp2, disty*-1, coefficient_of_restitution);
 }
 
-void SimpleParticleModel::CollideParticlePair(Particle & particle1, Particle & particle2) const {
+void SimpleParticleCollider::CollideParticlePair(Particle & particle1, Particle & particle2) const {
   double const distx{particle1.pos_x-particle2.pos_x};
   double const disty{particle1.pos_y-particle2.pos_y};
   double const dist{std::sqrt(distx*distx + disty*disty)};
   double const radius_sum{particle1.radius + particle2.radius};
   if(dist >= radius_sum) return;
-  if(dist < std::numeric_limits<double>::epsilon()) HandleParticleSamePosition(particle1, particle2, radius_sum);
+  if(dist < std::numeric_limits<double>::epsilon()) HandleParticleSamePosition(particle1, particle2);
   else {
     double const split_distx{(radius_sum*distx/dist - distx)/2};
     double const split_disty{(radius_sum*disty/dist - disty)/2};
@@ -82,13 +77,4 @@ void SimpleParticleModel::CollideParticlePair(Particle & particle1, Particle & p
     particle2.pos_y -= split_disty;
   }
   UpdateParticleVelocity(particle1, particle2);
-}
-
-void SimpleParticleModel::ParticleCollisions(ParticleContainer & particles) const {
-  for(auto begin{particles.begin()}, it{begin}, end{particles.end()}; it != end; ++it) {
-    for(auto it2{begin}; it2 != end; ++it2) {
-      if(it2 == it) continue;
-      CollideParticlePair(*it2, *it);
-    }
-  }
 }

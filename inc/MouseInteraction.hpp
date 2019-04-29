@@ -4,8 +4,10 @@
 #include "MouseState.hpp"
 #include "ParticleContainer.hpp"
 
-namespace MouseInteraction {
-  void Radial(ParticleContainer & particle_container, MouseState const & mouse_state, double const speed);
-}
+struct MouseInteraction {
+  MouseInteraction(double const in_mouse_acceleration = 0);
+  void Radial(ParticleContainer & particle_container, MouseState const & mouse_state);
+  double mouse_acceleration;
+};
 
 #endif

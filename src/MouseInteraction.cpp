@@ -1,7 +1,10 @@
 #include "MouseInteraction.hpp"
 #include "Math.hpp"
 
-void MouseInteraction::Radial(ParticleContainer & particle_container, MouseState const & mouse_state, double const speed) {
+MouseInteraction::MouseInteraction(double const in_mouse_acceleration) :
+  mouse_acceleration{in_mouse_acceleration} {}
+
+void MouseInteraction::Radial(ParticleContainer & particle_container, MouseState const & mouse_state) {
   if((!mouse_state.left && !mouse_state.right)) return; 
   auto UpdateParticles =
     [&](double const factor) {
@@ -15,6 +18,6 @@ void MouseInteraction::Radial(ParticleContainer & particle_container, MouseState
 	}
       }
     };
-  if(mouse_state.left) UpdateParticles(-speed);
-  else UpdateParticles(speed);
+  if(mouse_state.left) UpdateParticles(-mouse_acceleration);
+  else UpdateParticles(mouse_acceleration);
 }

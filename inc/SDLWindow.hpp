@@ -4,7 +4,6 @@
 #include <string>
 #include <SDL.h>
 #include "SDLPointer.hpp"
-#include "Border.hpp"
 
 class SDLWindow {
 public:

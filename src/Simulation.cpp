@@ -1,14 +1,12 @@
 #include "Simulation.hpp"
-#include "Border.hpp"
 #include "Utility.hpp"
-#include "MouseInteraction.hpp"
 #include "Math.hpp"
 
 Simulation::Simulation(double const particle_damping, double const coefficient_of_restitution,
-		       double const in_border_damping, double const in_mouse_acceleration) :
+		       double const border_damping, double const mouse_acceleration) :
   sdl_window{"Simulation"}, sdl_renderer{sdl_window.GetWindowPtr()}, fps_capper{60},
-  simple_particle_model{particle_damping, coefficient_of_restitution},
-  border_damping{in_border_damping}, mouse_acceleration{in_mouse_acceleration} {}
+  particle_mover{particle_damping}, simple_particle_collider{coefficient_of_restitution},
+  border{{0, 0}, sdl_window.GetWindowSize(), border_damping}, mouse_interaction{mouse_acceleration} {}
 
 std::pair<int, int> Simulation::GetWindowSize() const {
   return sdl_window.GetWindowSize();
@@ -49,16 +47,24 @@ void Simulation::AddParticle(double const pos_x, double const pos_y,
   }
   if(radius < Math::Magnitude(vel_x, vel_y)) Utility::Warning("Particle radius should be >= particle speed - "+GetValueString());
   particles.emplace_back(pos_x, pos_y, vel_x, vel_y, radius, mass);
-  sdl_renderer.AddTexture(texture_size ? texture_size : std::max(static_cast<int>(radius*2), 21), color);
+  sdl_renderer.AddParticleTexture(texture_size ? texture_size : std::max(static_cast<int>(radius*2), 21), color);
+}
+
+void Simulation::AddImmovable(double const pos_x, double const pos_y,
+			      double const radius, SDL_Color const & color,
+			      int const texture_size) {
+  immovables.emplace_back(pos_x, pos_y, radius);
+  sdl_renderer.AddImmovableTexture(texture_size ? texture_size : std::max(static_cast<int>(radius*2), 21), color);
 }
 
 void Simulation::Run() {
-  Border border{{0, 0}, sdl_window.GetWindowSize(), border_damping};
   while(input_handler.Continue()) {
-    MouseInteraction::Radial(particles, input_handler.GetMouseState(), mouse_acceleration);
-    simple_particle_model.Run(particles);
+    mouse_interaction.Radial(particles, input_handler.GetMouseState());
+    particle_mover.Move(particles);
+    simple_particle_collider.Collide(particles);
+    immovable_particle_collider.Collide(particles, immovables);
     border.Collide(particles);
-    sdl_renderer.Render(particles);
+    sdl_renderer.Render(particles, immovables);
     fps_capper.SleepToNextFrame();
   }
 }
