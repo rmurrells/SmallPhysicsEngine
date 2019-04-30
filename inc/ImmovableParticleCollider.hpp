@@ -9,7 +9,6 @@ public:
   ImmovableParticleCollider(double const in_coefficient_of_restitution = 1);
   void Collide(ParticleContainer & particles, ImmovableContainer const & immovables) const;
 private:
-  void UpdateParticleVelocity(Particle & particle, Immovable const & immovable) const;
   void HandleParticleSamePosition(Particle & particle,
 				  Immovable const & immovable) const;
   void CollideParticleWImmovable(Particle & particle,
