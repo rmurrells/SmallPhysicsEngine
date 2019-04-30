@@ -8,6 +8,8 @@ SDLRenderer::SDLRenderer(SDL_Window * const sdl_window, int const index,
   if(!ptr.Get()) throw std::runtime_error("SDL_Renderer could not be created, SDL_Error: "+std::string{SDL_GetError()});
 }
 
+SDLRenderer::~SDLRenderer() = default;
+
 void SDLRenderer::SetBackgroundColor(SDL_Color const & color) {
   background_color = color;
 }

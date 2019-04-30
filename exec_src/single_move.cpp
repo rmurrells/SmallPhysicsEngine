@@ -1,7 +1,7 @@
-#include "Simulation.hpp"
+#include "SimulationBuilder.hpp"
 
 int main() {
-  Simulation simulation;
+  Simulation simulation{SimulationBuilder().Build()};
   simulation.SetBackgroundColor(0, 0, 0);
   auto const [width, height] = simulation.GetWindowSize();
   double const vel_x{0}; double const vel_y{0};

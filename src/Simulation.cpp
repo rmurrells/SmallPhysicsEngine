@@ -2,11 +2,16 @@
 #include "Utility.hpp"
 #include "Math.hpp"
 
-Simulation::Simulation(double const particle_damping, double const coefficient_of_restitution,
-		       double const border_damping, double const mouse_acceleration) :
-  sdl_window{"Simulation"}, sdl_renderer{sdl_window.GetWindowPtr()}, fps_capper{60},
-  particle_mover{particle_damping}, simple_particle_collider{coefficient_of_restitution},
-  border{{0, 0}, sdl_window.GetWindowSize(), border_damping}, mouse_interaction{mouse_acceleration} {}
+Simulation::Simulation(SDLWindow && in_sdl_window, SDLRenderer && in_sdl_renderer,
+		       ParticleMover const & in_particle_mover,
+		       SimpleParticleCollider const & in_simple_particle_collider,
+		       Border const & in_border,
+		       MouseInteraction const & in_mouse_interaction) :
+  sdl_window{std::move(in_sdl_window)}, sdl_renderer{std::move(in_sdl_renderer)},
+  fps_capper{60}, particle_mover{in_particle_mover},
+  simple_particle_collider{in_simple_particle_collider},
+  border{in_border},
+  mouse_interaction{in_mouse_interaction} {}
 
 std::pair<int, int> Simulation::GetWindowSize() const {
   return sdl_window.GetWindowSize();

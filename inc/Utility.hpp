@@ -7,6 +7,7 @@
 namespace Utility {
   void Warning(std::string const & message);
   void SDLWarning(std::string const & message);
+  [[noreturn]] void SDLThrow(std::string const & message);
 }
 
 #endif

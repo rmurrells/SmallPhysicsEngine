@@ -1,4 +1,4 @@
-#include "Simulation.hpp"
+#include "SimulationBuilder.hpp"
 
 namespace {
   
@@ -27,8 +27,11 @@ namespace {
 }
 
 int main() {
-  Simulation simulation{1, 0.9, 0.9, 0.1};
-  simulation.SetBackgroundColor(0, 0, 0);
+  Simulation simulation{SimulationBuilder()
+			.SetParticleCR(0.9)
+			.SetBorderCR(0.9)
+			.SetMouseAccel(0.1)
+			.Build()};
   auto const [width, height] = simulation.GetWindowSize();
   double const radius{4}; double const mass{1}; 
   int const nj = 30;

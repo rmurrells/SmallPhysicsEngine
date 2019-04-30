@@ -1,4 +1,4 @@
-#include "Simulation.hpp"
+#include "SimulationBuilder.hpp"
 
 namespace {
   
@@ -36,7 +36,7 @@ namespace {
 }
 
 int main() {
-  Simulation simulation;
+  Simulation simulation{SimulationBuilder().Build()};
   simulation.SetBackgroundColor(0, 0, 0);
   auto const [width, height] = simulation.GetWindowSize();
   double const radius{4}; double const mass{1}; 

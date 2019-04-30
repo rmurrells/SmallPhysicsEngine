@@ -5,15 +5,21 @@
 #include <string>
 #include "ParticleContainer.hpp"
 #include "ImmovableContainer.hpp"
+#include "SDLBase.hpp"
 #include "SDLPointer.hpp"
 #include "SDLTexture.hpp"
 
-class SDLRenderer {
+class SDLRenderer : public SDLBase {
   using TextureInterface = std::vector<SDL_Texture*>;
 public:
   SDLRenderer(SDL_Window * const sdl_window, int const index = -1,
 	      Uint32 const flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC,
 	      SDL_Color const & in_background_color = {255, 255, 255, 255});
+  SDLRenderer(SDLRenderer const & copy_from) = delete;
+  SDLRenderer & operator=(SDLRenderer const & copy_from) = delete;
+  SDLRenderer(SDLRenderer && move_from) = default;
+  SDLRenderer & operator=(SDLRenderer && move_from) = default;
+  virtual ~SDLRenderer();
   void SetBackgroundColor(SDL_Color const & color);
   void AddParticleTexture(int const diameter, SDL_Color const & color);
   void AddImmovableTexture(int const diameter, SDL_Color const & color);

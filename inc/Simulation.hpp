@@ -2,7 +2,6 @@
 #define SIMULATION_HPP
 
 #include <type_traits>
-#include "SDLHandler.hpp"
 #include "SDLWindow.hpp"
 #include "SDLRenderer.hpp"
 #include "InputHandler.hpp"
@@ -17,8 +16,12 @@
 
 class Simulation {
 public:
-  Simulation(double const particle_damping = 1, double const coefficient_of_restitution = 1,
-	     double const border_damping = 1, double const in_mouse_acceleration = 0);
+  Simulation(SDLWindow && in_sdl_window,
+	     SDLRenderer && in_sdl_renderer,
+	     ParticleMover const & in_particle_mover,
+	     SimpleParticleCollider const & in_simple_particle_collider,
+	     Border const & in_border,
+	     MouseInteraction const & in_mouse_interaction);
   void AddParticle(double const pos_x, double const pos_y,
 		   double const vel_x, double const vel_y,
 		   double const radius, double const mass,
@@ -31,7 +34,6 @@ public:
   void SetBackgroundColor(Uint8 const r, Uint8 const g, Uint8 const b, Uint8 const a = 255);
   void Run();
 private:
-  SDLHandler sdl_handler;
   SDLWindow sdl_window;
   SDLRenderer sdl_renderer;
   InputHandler input_handler;

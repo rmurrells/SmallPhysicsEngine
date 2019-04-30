@@ -1,7 +1,7 @@
-#include "Simulation.hpp"
+#include "SimulationBuilder.hpp"
 
 int main() {
-  Simulation simulation;
+  Simulation simulation{SimulationBuilder().Build()};
   simulation.SetBackgroundColor(0, 0, 0);
   double const height{static_cast<double>(simulation.GetWindowSize().second)};
   int const n{10};
