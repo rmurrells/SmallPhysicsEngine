@@ -10,10 +10,6 @@ SDLRenderer::SDLRenderer(SDL_Window * const sdl_window, int const index,
 
 SDLRenderer::~SDLRenderer() = default;
 
-void SDLRenderer::SetBackgroundColor(SDL_Color const & color) {
-  background_color = color;
-}
-
 void SDLRenderer::AddParticleTexture(int const diameter, SDL_Color const & color) {
   AddTexture(particle_texture_interface, diameter, color);
 }

@@ -36,8 +36,9 @@ namespace {
 }
 
 int main() {
-  Simulation simulation{SimulationBuilder().Build()};
-  simulation.SetBackgroundColor(0, 0, 0);
+  Simulation simulation{SimulationBuilder()
+			.SetBackgroundColor({0, 0, 0, 255})
+			.Build()};
   auto const [width, height] = simulation.GetWindowSize();
   double const radius{4}; double const mass{1}; 
   int const nj = 30;

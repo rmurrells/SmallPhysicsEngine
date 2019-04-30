@@ -1,8 +1,9 @@
 #include "SimulationBuilder.hpp"
 
 int main() {
-  Simulation simulation{SimulationBuilder().Build()};
-  simulation.SetBackgroundColor(0, 0, 0);
+  Simulation simulation{SimulationBuilder()
+			.SetBackgroundColor({0, 0, 0, 255})
+			.Build()};
   auto const [width, height] = simulation.GetWindowSize();
   double const vel_x{0}; double const vel_y{0};
   double const radius{4}; double const mass{1}; 

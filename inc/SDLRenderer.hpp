@@ -20,7 +20,6 @@ public:
   SDLRenderer(SDLRenderer && move_from) = default;
   SDLRenderer & operator=(SDLRenderer && move_from) = default;
   virtual ~SDLRenderer();
-  void SetBackgroundColor(SDL_Color const & color);
   void AddParticleTexture(int const diameter, SDL_Color const & color);
   void AddImmovableTexture(int const diameter, SDL_Color const & color);
   void Render(ParticleContainer const & particles, ImmovableContainer const & immovables);

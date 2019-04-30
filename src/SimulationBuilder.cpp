@@ -3,7 +3,7 @@
 Simulation SimulationBuilder::Build() const {
   SDLWindow sdl_window{"Simulation", SDL_WINDOW_SHOWN, width, height};
   SDLRenderer sdl_renderer{sdl_window.GetWindowPtr(), -1,
-			   SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC,
+			   SDL_RENDERER_ACCELERATED,
 			   background_color};
   ParticleMover particle_mover{particle_motion_damping};
   SimpleParticleCollider simple_particle_collider{particle_cr};

@@ -27,12 +27,13 @@ namespace {
 }
 
 int main() {
+  double const cr{0.5};
   Simulation simulation{SimulationBuilder()
 			.SetBackgroundColor({0, 0, 0, 255})
-			.SetParticleCR(0.9)
-			.SetImmovableCR(0.9)
-			.SetBorderCR(0.9)
-			.SetMouseAccel(0.1)
+			.SetParticleCR(cr)
+			.SetImmovableCR(cr)
+			.SetBorderCR(cr)
+			.SetMouseAccel(0.8)
 			.Build()};
   auto const [width, height] = simulation.GetWindowSize();
   double const radius{4}; double const mass{1}; 
@@ -47,7 +48,9 @@ int main() {
       IncrementColor(color);
     }
   }
-  simulation.AddImmovable(200, 200, 100, {125, 125, 125, 255});
-  simulation.AddImmovable(width-200, height-200, 50, {125, 125, 125, 255});
+  simulation.AddImmovable(static_cast<double>(width/4), static_cast<double>(height/4), 50, {125, 125, 125, 255});
+  simulation.AddImmovable(static_cast<double>(3*width/4), static_cast<double>(height/4), 50, {125, 125, 125, 255});
+  simulation.AddImmovable(static_cast<double>(width/4), static_cast<double>(3*height/4), 50, {125, 125, 125, 255});
+  simulation.AddImmovable(static_cast<double>(3*width/4), static_cast<double>(3*height/4), 50, {125, 125, 125, 255});
   simulation.Run();
 }
