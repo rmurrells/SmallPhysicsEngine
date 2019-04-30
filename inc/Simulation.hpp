@@ -20,6 +20,7 @@ public:
 	     SDLRenderer && in_sdl_renderer,
 	     ParticleMover const & in_particle_mover,
 	     SimpleParticleCollider const & in_simple_particle_collider,
+	     ImmovableParticleCollider const & in_immovable_particle_collider,
 	     Border const & in_border,
 	     MouseInteraction const & in_mouse_interaction);
   void AddParticle(double const pos_x, double const pos_y,

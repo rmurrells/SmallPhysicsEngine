@@ -5,11 +5,13 @@
 Simulation::Simulation(SDLWindow && in_sdl_window, SDLRenderer && in_sdl_renderer,
 		       ParticleMover const & in_particle_mover,
 		       SimpleParticleCollider const & in_simple_particle_collider,
+		       ImmovableParticleCollider const & in_immovable_particle_collider,
 		       Border const & in_border,
 		       MouseInteraction const & in_mouse_interaction) :
   sdl_window{std::move(in_sdl_window)}, sdl_renderer{std::move(in_sdl_renderer)},
   fps_capper{60}, particle_mover{in_particle_mover},
   simple_particle_collider{in_simple_particle_collider},
+  immovable_particle_collider{in_immovable_particle_collider},
   border{in_border},
   mouse_interaction{in_mouse_interaction} {}
 

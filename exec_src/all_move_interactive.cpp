@@ -28,7 +28,9 @@ namespace {
 
 int main() {
   Simulation simulation{SimulationBuilder()
+			.SetBackgroundColor({0, 0, 0, 255})
 			.SetParticleCR(0.9)
+			.SetImmovableCR(0.9)
 			.SetBorderCR(0.9)
 			.SetMouseAccel(0.1)
 			.Build()};
