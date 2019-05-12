@@ -1,6 +1,7 @@
 #include "Simulation.hpp"
 #include "Utility.hpp"
 #include "Math.hpp"
+#include "Gravity.hpp"
 
 Simulation::Simulation(SDLWindow && in_sdl_window, SDLRenderer && in_sdl_renderer,
 		       ParticleMover const & in_particle_mover,
@@ -59,11 +60,13 @@ void Simulation::AddImmovable(double const pos_x, double const pos_y,
 void Simulation::Run() {
   while(input_handler.Continue()) {
     mouse_interaction.Radial(particles, input_handler.GetMouseState());
+    LoopGravity(particles, (static_cast<double>(fps_capper.GetFrameDuration())/1e6));
     particle_mover.Move(particles);
     simple_particle_collider.Collide(particles);
     immovable_particle_collider.Collide(particles, immovables);
-    border.Collide(particles);
+    border.Collide(particles);    
     sdl_renderer.Render(particles, immovables);
     fps_capper.SleepToNextFrame();
+    
   }
 }
