@@ -5,12 +5,14 @@
 
 Simulation::Simulation(SDLWindow && in_sdl_window, SDLRenderer && in_sdl_renderer,
 		       ParticleMover const & in_particle_mover,
+		       Gravity const & in_gravity,
 		       SimpleParticleCollider const & in_simple_particle_collider,
 		       ImmovableParticleCollider const & in_immovable_particle_collider,
 		       Border const & in_border,
 		       MouseInteraction const & in_mouse_interaction) :
   sdl_window{std::move(in_sdl_window)}, sdl_renderer{std::move(in_sdl_renderer)},
   fps_capper{60}, particle_mover{in_particle_mover},
+  gravity{in_gravity},
   simple_particle_collider{in_simple_particle_collider},
   immovable_particle_collider{in_immovable_particle_collider},
   border{in_border},
@@ -60,13 +62,12 @@ void Simulation::AddImmovable(double const pos_x, double const pos_y,
 void Simulation::Run() {
   while(input_handler.Continue()) {
     mouse_interaction.Radial(particles, input_handler.GetMouseState());
-    LoopGravity(particles, (static_cast<double>(fps_capper.GetFrameDuration())/1e6));
     particle_mover.Move(particles);
     simple_particle_collider.Collide(particles);
+    gravity.LoopGravity(particles, (static_cast<double>(fps_capper.GetFrameDuration())/1e6));
     immovable_particle_collider.Collide(particles, immovables);
     border.Collide(particles);    
     sdl_renderer.Render(particles, immovables);
     fps_capper.SleepToNextFrame();
-    
   }
 }

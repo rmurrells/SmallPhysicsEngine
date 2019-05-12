@@ -8,6 +8,7 @@
 #include "FPSCapper.hpp"
 #include "ParticleContainer.hpp"
 #include "ImmovableContainer.hpp"
+#include "Gravity.hpp"
 #include "ParticleMover.hpp"
 #include "SimpleParticleCollider.hpp"
 #include "ImmovableParticleCollider.hpp"
@@ -19,6 +20,7 @@ public:
   Simulation(SDLWindow && in_sdl_window,
 	     SDLRenderer && in_sdl_renderer,
 	     ParticleMover const & in_particle_mover,
+	     Gravity const & in_gravity,
 	     SimpleParticleCollider const & in_simple_particle_collider,
 	     ImmovableParticleCollider const & in_immovable_particle_collider,
 	     Border const & in_border,
@@ -40,6 +42,7 @@ private:
   ParticleContainer particles;
   ImmovableContainer immovables;
   ParticleMover particle_mover;
+  Gravity gravity;
   SimpleParticleCollider simple_particle_collider;
   ImmovableParticleCollider immovable_particle_collider;
   Border border;
