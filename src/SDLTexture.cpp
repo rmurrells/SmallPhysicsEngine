@@ -41,13 +41,15 @@ SDLPointer<SDL_Texture> SDLTexture::GetCircleTexture(SDL_Renderer * renderer, in
   auto pixels{static_cast<Uint32*>(surface->pixels)};
   auto const color{SDL_MapRGBA(surface->format, sdl_color.r, sdl_color.g, sdl_color.b, sdl_color.a)};
   Uint32 const transparent{color ? Uint32{0} : Uint32{1}};
-  for(int i{0}; i < diameter*diameter; ++i) pixels[i] = transparent;
   for(int i{0}; i < diameter*diameter; ++i) {
     int const px{i-diameter*(i/diameter)-radius};
     int const py{i/diameter-radius};
     if([radius, radiussq](int const x, int const y)
-       {return x*x+y*y < radiussq+radius;}(px+(even && px > 0), py+(even && py > 0)))
+       {return x*x+y*y < radiussq+radius;}(px+(even && px > 0), py+(even && py > 0))) {
       pixels[i] = color;
+    } else {
+      pixels[i] = transparent;
+    }
   }
   if(SDL_SetColorKey(surface.Get(), SDL_TRUE, transparent) > 0) {
     Utility::SDLWarning("Could not set color key for circle");
