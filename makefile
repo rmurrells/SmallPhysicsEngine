@@ -11,7 +11,7 @@ OP = -O2
 CC = g++ $(OP) -std=c++17 $(WARNINGS)
 
 INCS = `sdl2-config --cflags` -I$(INC_DIR)
-LIBS = `sdl2-config --libs` -lSDL2_image
+LIBS = `sdl2-config --libs` #-lSDL2_image
 
 MKDIR = mkdir -p
 EXEC = $(patsubst %, $(BUILD_DIR)/%, $(notdir $(patsubst %.cpp, %, $(wildcard $(EXEC_SRC_DIR)/*.cpp))))

@@ -14,7 +14,7 @@ public:
   SDLWindow(SDLWindow const & copy_from) = delete;
   SDLWindow & operator=(SDLWindow const & copy_from) = delete;
   SDLWindow(SDLWindow && move_from) = default;
-  SDLWindow & operator=(SDLWindow && move_from) = default;
+  SDLWindow & operator=(SDLWindow && move_from) = delete;
   virtual ~SDLWindow();
   SDL_Window * GetWindowPtr() const;
   int GetRefreshRate() const;

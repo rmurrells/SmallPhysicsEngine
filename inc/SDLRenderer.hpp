@@ -18,7 +18,7 @@ public:
   SDLRenderer(SDLRenderer const & copy_from) = delete;
   SDLRenderer & operator=(SDLRenderer const & copy_from) = delete;
   SDLRenderer(SDLRenderer && move_from) = default;
-  SDLRenderer & operator=(SDLRenderer && move_from) = default;
+  SDLRenderer & operator=(SDLRenderer && move_from) = delete;
   virtual ~SDLRenderer();
   void AddParticleTexture(int const diameter, SDL_Color const & color);
   void AddImmovableTexture(int const diameter, SDL_Color const & color);

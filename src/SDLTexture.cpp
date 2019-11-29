@@ -3,6 +3,7 @@
 #include "SDL_image.h"
 #include "Utility.hpp"
 
+/*
 SDLPointer<SDL_Texture> SDLTexture::InitializeFromBMP(SDL_Renderer * renderer, std::string const & file_path) {
   SDLPointer<SDL_Surface> surface{IMG_Load(file_path.c_str()), SDL_FreeSurface};
   if(!surface.Get()) {
@@ -24,7 +25,8 @@ SDLPointer<SDL_Texture> SDLTexture::InitializeFromBMP(SDL_Renderer * renderer, s
   }
   return {texture, SDL_DestroyTexture};
 }
-  
+*/
+
 SDLPointer<SDL_Texture> SDLTexture::GetCircleTexture(SDL_Renderer * renderer, int const diameter, SDL_Color const & sdl_color) {
   SDLPointer<SDL_Surface> surface{SDL_CreateRGBSurface(0, diameter, diameter,
 						       sizeof(Uint32)*8, 0, 0, 0, 0), SDL_FreeSurface};
