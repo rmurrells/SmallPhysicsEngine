@@ -7,11 +7,10 @@ REQ_DIRS = $(BUILD_DIR) $(OBJ_DIR)
 
 WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-reserved-id-macro -Wno-implicit-fallthrough -Wno-documentation
 OP = -O2
-#OP = -g
 CC = g++ $(OP) -std=c++17 $(WARNINGS)
 
 INCS = `sdl2-config --cflags` -I$(INC_DIR)
-LIBS = `sdl2-config --libs` #-lSDL2_image
+LIBS = `sdl2-config --libs`
 
 MKDIR = mkdir -p
 EXEC = $(patsubst %, $(BUILD_DIR)/%, $(notdir $(patsubst %.cpp, %, $(wildcard $(EXEC_SRC_DIR)/*.cpp))))
