@@ -19,3 +19,6 @@
 *.so
 *.pyc
 *.dSYM
+build/
+
+!CMakeLists.txt
