@@ -4,18 +4,34 @@ project(SmallPhysicsEngine VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-endif()
-set(CMAKE_CXX_FLAGS "-Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-reserved-id-macro -Wno-implicit-fallthrough -Wno-documentation")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+if(WIN32)
+	set(SDL2_DIR ${CMAKE_SOURCE_DIR}/SDL2)
+	set(SDL2_INCLUDE_DIRS ${SDL2_DIR}/include)
 
-find_package(SDL2)
-set(BIN ${CMAKE_BINARY_DIR}/bin)
+	if (${CMAKE_SIZEOF_VOID_P} MATCHES 8)
+		set(SDL2_LIBDIR "${SDL2_DIR}/lib/x64")
+	else ()
+		set(SDL2_LIBDIR "${SDL2_DIR}/lib/x86")
+	endif ()
+	set(SDL2_LIBRARIES "${SDL2_LIBDIR}/SDL2.lib;${SDL2_LIBDIR}/SDL2main.lib")
+
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		add_compile_options(/EHsc /W4)
+	endif()
+else()
+	find_package(SDL2 REQUIRED)
+	if(NOT CMAKE_BUILD_TYPE)
+  		set(CMAKE_BUILD_TYPE Release)
+	endif()
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+		set(CMAKE_CXX_FLAGS "-Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-reserved-id-macro -Wno-implicit-fallthrough -Wno-documentation")
+		set(CMAKE_CXX_FLAGS_DEBUG "-g")
+		set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+	endif()
+endif()
+
 set(INC_DIR ${CMAKE_SOURCE_DIR}/inc)
 add_subdirectory(src)
-
 set(TARGETS
 	all_move
 	all_move_interactive
@@ -24,11 +40,13 @@ set(TARGETS
 	single_move_gravity
 	view_texture
 )
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN})
-
 foreach(TARGET ${TARGETS})
-	       add_executable(${TARGET} ${CMAKE_SOURCE_DIR}/src/exec/${TARGET}.cpp)
-	       target_include_directories(${TARGET} PUBLIC ${INC_DIR})
-	       target_link_libraries(${TARGET} PUBLIC src ${SDL2_LIBRARIES})
+	add_executable(${TARGET} ${CMAKE_SOURCE_DIR}/src/exec/${TARGET}.cpp)
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		add_custom_command(TARGET ${TARGET} POST_BUILD
+			COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${SDL2_LIBDIR}/SDL2.dll" "${CMAKE_BINARY_DIR}/$<CONFIG>/"
+		)
+	endif()
+	target_include_directories(${TARGET} PUBLIC ${INC_DIR})
+	target_link_libraries(${TARGET} PUBLIC src ${SDL2_LIBRARIES})
 endforeach()

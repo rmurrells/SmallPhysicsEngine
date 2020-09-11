@@ -27,7 +27,7 @@ void Border::Collide(ParticleContainer & particle_container) {
 	if(position+particle.radius > sboundary+lboundary) {
 	  position = sboundary+lboundary-particle.radius;
 	  SurfaceCollision::UpdateVelocity(particle.vel_x, particle.vel_y,
-					   -(xaxis), -(!xaxis), coefficient_of_restitution);
+					   -int(xaxis), -int(!xaxis), coefficient_of_restitution);
 	} else if(position-particle.radius < sboundary) {
 	  position = sboundary+particle.radius;
 	  SurfaceCollision::UpdateVelocity(particle.vel_x, particle.vel_y,

@@ -35,7 +35,7 @@ namespace {
   
 }
 
-int main() {
+int main(int, char*[]) {
   Simulation simulation{SimulationBuilder()
 			.SetBackgroundColor({0, 0, 0, 255})
 			.Build()};
@@ -56,4 +56,5 @@ int main() {
     }
   }
   simulation.Run();
+  return 0;
 }

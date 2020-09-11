@@ -9,6 +9,7 @@
 !makefile
 
 .DS_Store
+.vscode
 *~
 *.o
 *.d
@@ -20,5 +21,6 @@
 *.pyc
 *.dSYM
 build/
+SDL2/
 
 !CMakeLists.txt

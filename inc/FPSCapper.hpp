@@ -34,7 +34,7 @@ long long FPSCapper<TimeUnit>::GetFrameDuration() const {
 
 template<class TimeUnit> 
 void FPSCapper<TimeUnit>::SleepToNextFrame() {
-  auto const duration = TimeUnit{std::chrono::system_clock::now() - start};
+  auto const duration = std::chrono::duration_cast<TimeUnit>(std::chrono::system_clock::now() - start);
   if(duration < frame_duration) std::this_thread::sleep_for(frame_duration - duration);
   start = std::chrono::system_clock::now();
 }

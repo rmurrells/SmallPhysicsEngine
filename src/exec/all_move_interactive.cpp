@@ -26,7 +26,7 @@ namespace {
 
 }
 
-int main() {
+int main(int, char*[]) {
   double const cr{0.5};
   Simulation simulation{SimulationBuilder()
 			.SetBackgroundColor({0, 0, 0, 255})
@@ -53,4 +53,5 @@ int main() {
   simulation.AddImmovable(static_cast<double>(width/4), static_cast<double>(3*height/4), 50, {125, 125, 125, 255});
   simulation.AddImmovable(static_cast<double>(3*width/4), static_cast<double>(3*height/4), 50, {125, 125, 125, 255});
   simulation.Run();
+  return 0;
 }

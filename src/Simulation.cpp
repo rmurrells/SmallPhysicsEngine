@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Simulation.hpp"
 #include "Utility.hpp"
 #include "Math.hpp"

@@ -1,6 +1,6 @@
 #include "SimulationBuilder.hpp"
 
-int main() {
+int main(int, char*[]) {
   Simulation simulation{SimulationBuilder()
 			.SetBackgroundColor({0, 0, 0, 255})
 			.Build()};
@@ -17,4 +17,5 @@ int main() {
   }
   simulation.AddParticle(0, 0, 5, 4, 7, 20, {255, 0, 0, 255}); 
   simulation.Run();
+  return 0;
 }
