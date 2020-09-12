@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.16)
 project(SmallPhysicsEngine VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -33,7 +33,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR CMAKE_SYSTEM_NAME STREQUAL "Linux"
 	if(NOT CMAKE_BUILD_TYPE)
   		set(CMAKE_BUILD_TYPE Release)
 	endif()
-	set(CMAKE_CXX_FLAGS "-Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-reserved-id-macro -Wno-implicit-fallthrough -Wno-documentation")
+	set(CMAKE_CXX_FLAGS "-Wall")
 	set(CMAKE_CXX_FLAGS_DEBUG "-g")
 	set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
