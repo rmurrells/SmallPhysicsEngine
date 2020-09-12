@@ -21,6 +21,6 @@
 *.pyc
 *.dSYM
 build/
-SDL2/
+SDL2*/
 
 !CMakeLists.txt

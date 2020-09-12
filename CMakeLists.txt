@@ -11,7 +11,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	endif()
 	add_compile_options(/EHsc /W4)
 
-	set(SDL2_DIR ${CMAKE_SOURCE_DIR}/SDL2)
+	find_path(SDL2_DIR NAMES include/SDL.h PATHS ${CMAKE_SOURCE_DIR}/* NO_DEFAULT_PATHS)
+	if(NOT SDL2_DIR)
+		message(FATAL_ERROR "Could not find SDL2.")
+	endif()
 	set(SDL2_INCLUDE_DIRS ${SDL2_DIR}/include)
 
 	if (${CMAKE_SIZEOF_VOID_P} MATCHES 8)
