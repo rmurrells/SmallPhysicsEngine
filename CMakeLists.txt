@@ -52,11 +52,13 @@ set(TARGETS
 
 foreach(TARGET ${TARGETS})
 	add_executable(${TARGET} ${CMAKE_SOURCE_DIR}/src/exec/${TARGET}.cpp)
-	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-		add_custom_command(TARGET ${TARGET} POST_BUILD
-			COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${SDL2_LIBDIR}/SDL2.dll" "${CMAKE_BINARY_DIR}/$<CONFIG>/"
-		)
-	endif()
 	target_include_directories(${TARGET} PUBLIC ${INC_DIR})
 	target_link_libraries(${TARGET} PUBLIC src ${SDL2_LIBRARIES})
 endforeach()
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	list(GET TARGETS 0 FIRST)
+	add_custom_command(TARGET ${FIRST} PRE_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${SDL2_LIBDIR}/SDL2.dll" "${CMAKE_BINARY_DIR}/$<CONFIG>/"
+	)
+endif()
