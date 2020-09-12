@@ -30,10 +30,14 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR CMAKE_SYSTEM_NAME STREQUAL "Linux"
 	set(CMAKE_CXX_FLAGS "-Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-reserved-id-macro -Wno-implicit-fallthrough -Wno-documentation")
 	set(CMAKE_CXX_FLAGS_DEBUG "-g")
 	set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+else()
+	message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} not supported.")
 endif()
 
 set(INC_DIR ${CMAKE_SOURCE_DIR}/inc)
 add_subdirectory(src)
+
 set(TARGETS
 	all_move
 	all_move_interactive
@@ -42,6 +46,7 @@ set(TARGETS
 	single_move_gravity
 	view_texture
 )
+
 foreach(TARGET ${TARGETS})
 	add_executable(${TARGET} ${CMAKE_SOURCE_DIR}/src/exec/${TARGET}.cpp)
 	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
