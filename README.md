@@ -20,4 +20,6 @@ cmake ..
 cmake --build . --config release
 ```
 
-A directory called Release should be created and contain five different simulation executables that can be run. The escape key can be used to close the simulation. Left and right click will attract and repel balls to the cursor location respectively for the all_move_interactive simulation.
+This will create an an executable directory called Release which will contain the simulation executables.
+
+The exectuable directory will contain four simulation executables that can be run. The escape key can be used to close a simulation. Left and right click will attract and repel balls to the cursor location respectively for the all_move_interactive simulation.
