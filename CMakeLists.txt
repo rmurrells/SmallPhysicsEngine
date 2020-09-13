@@ -50,7 +50,7 @@ set(TARGETS
 	different_masses
 	single_move
 	single_move_gravity
-	view_texture
+	#view_texture
 )
 
 foreach(TARGET ${TARGETS})
